@@ -1,0 +1,22 @@
+platform: linux
+inputs:
+- name: user-git
+outputs:
+- name: artifact
+run:
+  dir: user-git
+  path: bash
+  args:
+  - -exc
+  - |
+    version=$(git describe)
+    sed -i -e "s/\[VERSION_INFO\]/${version}/" ./src/main/resources/application.properties
+    ./mvnw build
+    output_directory=../artifact
+    mv build/libs/user-git-0.0.1-SNAPSHOT.jar ../artifact/user-0.0.1-SNAPSHOT.jar
+    mv ci/manifest.yml ../artifact/manifest.yml
+    filename=user-${version}.zip
+    cd ${output_directory}
+    apt update
+    apt install -y zip
+    zip -r ${filename} ./*

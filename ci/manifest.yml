@@ -1,0 +1,8 @@
+---
+applications:
+- name: [APP_NAME]
+  instances: 1
+  memory: 1024M
+  host: [HOST_NAME]
+  services:
+  - user
